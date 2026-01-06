@@ -1,0 +1,39 @@
+# Runtime compose - For running Canvas LMS
+# Usage: docker-compose -f compose.runtime.yml up -d
+
+volumes:
+  canvas_data:
+    name: canvas-app-data
+  canvas_logs:
+    name: canvas-logs
+
+networks:
+  canvas-network:
+    name: canvas-network
+    driver: bridge
+
+services:
+  canvas:
+    build:
+      context: .
+      dockerfile: runtime.dockerfile
+      args:
+        RAILS_ENV: ${RAILS_ENV:-production}
+        BUNDLE_PATH: ${BUNDLE_PATH:-/var/canvas/vendor/bundle}
+        LANG: ${LANG:-en_US.UTF-8}
+        TZ: ${TZ:-Asia/Ho_Chi_Minh}
+    image: canvas-runtime:latest
+    container_name: canvas-app
+    volumes:
+      # Canvas volume (prepared by builder)
+      - canvas_data:/var/canvas
+      # Config from host (read-only)
+      - ./config:/var/canvas/config:ro
+      # Apache logs
+      - canvas_logs:/var/log/apache2
+    ports:
+      - "${CANVAS_HTTP_PORT:-80}:80"
+      - "${CANVAS_HTTPS_PORT:-443}:443"
+    networks:
+      - canvas-network
+    restart: unless-stopped

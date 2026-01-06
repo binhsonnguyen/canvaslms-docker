@@ -1,0 +1,25 @@
+# Builder compose - For preparing Canvas volume
+# Usage: docker-compose -f compose.builder.yml run --rm canvas-builder
+
+volumes:
+  canvas_data:
+    name: canvas-app-data
+
+services:
+  canvas-builder:
+    build:
+      context: .
+      dockerfile: builder.dockerfile
+    image: canvas-builder:latest
+    container_name: canvas-builder
+    volumes:
+      # Canvas volume (shared with runtime)
+      - canvas_data:/var/canvas
+      # Bidirectional: host ↔ volume
+      - ./canvas-lms:/opt/canvas-src
+      - ./config:/opt/config
+    environment:
+      # Only build-related env vars
+      RAILS_ENV: production
+      NODE_ENV: production
+    working_dir: /var/canvas
