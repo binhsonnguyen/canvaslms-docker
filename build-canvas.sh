@@ -28,7 +28,7 @@ elif [ -d "$CANVAS_SRC_VOLUME" ] && [ -f "$CANVAS_SRC_VOLUME/Gemfile" ]; then
     echo "  ✓ Source copied: volume → host"
 else
     echo "  ✗ ERROR: No Canvas source found!"
-    echo "    Please place Canvas source in ./canvas-lms/ on host"
+    echo "    Please place Canvas source in ./canvas-src/ on host"
     exit 1
 fi
 

@@ -16,7 +16,7 @@ services:
       # Canvas volume (shared with runtime)
       - canvas_data:/var/canvas
       # Bidirectional: host ↔ volume
-      - ./canvas-lms:/opt/canvas-src
+      - ./canvas-src:/opt/canvas-src
       - ./config:/opt/config
     environment:
       # Only build-related env vars
