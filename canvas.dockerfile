@@ -74,6 +74,3 @@ RUN apt-get update -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite
-
-RUN /etc/init.d/apache2 restart
-
