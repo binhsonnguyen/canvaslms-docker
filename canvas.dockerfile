@@ -68,7 +68,8 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC
 
 FROM passenger-base AS apache-base
 
-RUN apt-get update -y && apt-get install -y libapache2-mod-passenger apache2 \
+RUN apt-get update -y \
+    && apt-get install -y apache2 libapache2-mod-passenger libapache2-mod-xsendfile \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
