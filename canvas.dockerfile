@@ -74,3 +74,25 @@ RUN apt-get update -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite
+
+# Apache will be started via entrypoint/CMD, not during build
+
+FROM apache-base AS canvas-runtime
+
+# Install useful tools
+RUN apt-get update -y \
+    && apt-get install -y vim htop git less nano net-tools postgresql-client \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create canvas user
+RUN useradd --create-home --shell /bin/bash --comment "Canvas LMS User" canvasuser
+
+# Create canvas directory structure
+RUN mkdir -p /var/canvas/log \
+    /var/canvas/tmp/pids \
+    /var/canvas/public/assets \
+    /var/canvas/app/stylesheets/brandable_css_brands
+
+# Set working directory
+WORKDIR /var/canvas
